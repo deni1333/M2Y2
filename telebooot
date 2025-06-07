@@ -1,0 +1,50 @@
+import telebot
+import os
+
+from telegram import Update
+from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
+
+bot = telebot.Telebot("7960695433:AAHYpYZBmFZzLZ3DSeL_tiMJrcbnL4WPA6s")
+
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+    bot.reply_to(message, 'Привет! Я твой Telegram бот. Напиши что нибудь!')
+
+@bot.message_handler(commands=['hello'])
+def send_hello(message):
+    bot.reply_to(message, 'Привет! Как дела?')
+
+# Decomposition times dictionary
+DECOMPOSITION_TIMES = {
+    'plastick': "Пластик разлагается примерно от 100 до 1000 лет, в зависимости от типа пластика.",
+    'steclo': "Стекло разлагается около 1 миллиона лет, практически не разлагается в природе.",
+    'bumaga': "Бумага разлагается от 2 до 6 недель в зависимости от условий.",
+}
+
+async def plastick(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(DECOMPOSITION_TIMES['plastick'])
+
+async def steclo(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(DECOMPOSITION_TIMES['steclo'])
+
+async def bumaga(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text(DECOMPOSITION_TIMES['bumaga'])
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    welcome_message = (
+        "Привет! Я бот, который подскажет, сколько времени разлагается мусор.\n\n"
+        "Используй команды:\n"
+        "/plastick - время разложения пластика\n"
+        "/steclo - время разложения стекла\n"
+        "/bumaga - время разложения бумаги"
+    )
+    await update.message.reply_text(welcome_message)
+
+def main():
+
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CommandHandler("plastick", plastick))
+    app.add_handler(CommandHandler("steclo", steclo))
+    app.add_handler(CommandHandler("bumaga", bumaga))
+
+   bot.polling()
